@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -18,6 +19,17 @@ public class GameManagerScript : MonoBehaviour
     public Button GreenButton;
     List<Button> AllButtons;
 
+    //audio variables
+    AudioSource myAS;
+    public AudioClip victory;
+
+    //text variables
+    public GameObject youWintext;
+    public GameObject youLosetext;
+    public GameObject instructionText;
+    public GameObject yourTurnText;
+    public TMP_Text numberText;
+
     void populateButtonList()
     { 
         AllButtons = new List<Button>()
@@ -25,14 +37,10 @@ public class GameManagerScript : MonoBehaviour
             RedButton, BlueButton, YellowButton, GreenButton
         };
     }
-    
-
-    //audio variables
-    AudioSource myAS;
-    public AudioClip victory;
 
     void Start()
     {
+        instructionText.SetActive(true);
         EnableButtons(false);
         BuildPuzzle();
         populateButtonList();
@@ -79,7 +87,8 @@ public class GameManagerScript : MonoBehaviour
             choiceIndex++;
             if(choiceIndex >= instructions.Count)
             {
-                print("You win!");
+                yourTurnText.SetActive(false);
+                youWintext.SetActive(true);
                 myAS.clip = victory;
                 myAS.PlayOneShot(victory);
             }
@@ -88,7 +97,8 @@ public class GameManagerScript : MonoBehaviour
         //incorrect guess
         else
         {
-            print("Wrong");
+            yourTurnText.SetActive(false);
+            youLosetext.SetActive(true);
             GameOver();
         }
 
@@ -96,7 +106,6 @@ public class GameManagerScript : MonoBehaviour
 
     IEnumerator BeepButton(int button)
     {
-        //Change button colour
         AllButtons[button].image.color = AllButtons[button].colors.pressedColor;
         PlaySound(button);
         yield return new WaitForSeconds(1);
@@ -120,7 +129,8 @@ public class GameManagerScript : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1);
-        print("Your turn to play!");
+        instructionText.SetActive(false);
+        yourTurnText.SetActive(true);
         currentState = GameState.playing;
         EnableButtons(true);
     }
