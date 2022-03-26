@@ -393,10 +393,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Difficulty: 7
-  redButton: {fileID: 1399955347}
-  blueButton: {fileID: 1212971753}
-  yellowButton: {fileID: 87054596}
-  greenButton: {fileID: 1463968172}
+  RedButton: {fileID: 1399955347}
+  BlueButton: {fileID: 1212971753}
+  YellowButton: {fileID: 87054596}
+  GreenButton: {fileID: 1463968172}
 --- !u!82 &146477260
 AudioSource:
   m_ObjectHideFlags: 0

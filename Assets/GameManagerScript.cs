@@ -12,26 +12,24 @@ public class GameManagerScript : MonoBehaviour
     GameState currentState = GameState.setup;
 
     //button objects
-    public Button redButton;
-    public Button blueButton;
-    public Button yellowButton;
-    public Button greenButton;
+    public Button RedButton;
+    public Button BlueButton;
+    public Button YellowButton;
+    public Button GreenButton;
 
     //audio variables
     AudioSource myAS;
+    public AudioClip victory;
 
     void Start()
     {
         EnableButtons(false);
         BuildPuzzle();
         StartCoroutine(SimonSaysWhat());
-
-
     }
 
     public void GameOver()
     {
-        EnableButtons(false);
         currentState = GameState.gameOver;
         myAS = gameObject.GetComponent<AudioSource>();
         myAS.PlayOneShot(myAS.clip);
@@ -44,8 +42,6 @@ public class GameManagerScript : MonoBehaviour
         for (int n = 0; n < Difficulty; n++)
         {
             instructions.Add(Random.Range(0, 4));
-            //print("answer #: " + (n + 1) + " value: " + instructions[n]);
-
         }
 
     }
@@ -53,20 +49,38 @@ public class GameManagerScript : MonoBehaviour
     public void ButtonPress(int colour)
     {
 
- 
-        if (currentState == GameState.playing && choiceIndex < instructions.Count)
+        //Player wins
+        if (choiceIndex >= instructions.Count)
         {
-            if (instructions[choiceIndex] == colour)
-            {
-                PlaySound(colour);
-                choiceIndex++;
-            }
-            else
-            {
-                print("Wrong");
-                GameOver();               
-            }
+            print("You already won!");
+            myAS.PlayOneShot(victory);
         }
+        //player already lost
+        else if (currentState == GameState.gameOver)
+        {
+            myAS.PlayOneShot(myAS.clip);
+        }
+        //Player guesses correctly
+        else if (instructions[choiceIndex] == colour)
+        {
+            //next guess
+            PlaySound(colour);
+            choiceIndex++;
+            if(choiceIndex >= instructions.Count)
+            {
+                print("You win!");
+                myAS.clip = victory;
+                myAS.PlayOneShot(victory);
+            }
+
+        }
+        //incorrect guess
+        else
+        {
+            print("Wrong");
+            GameOver();
+        }
+
     }
 
     IEnumerator SimonSaysWhat()
@@ -80,13 +94,13 @@ public class GameManagerScript : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         //Beeping the buttons
-        for (int c = 0; c< Difficulty; c++)
+        for (int c = 0; c < Difficulty; c++)
         {
 
             //RED
             if (instructions[c] == 0)
             {
-                redButton.image.color = redButton.colors.pressedColor;
+                RedButton.image.color = RedButton.colors.pressedColor;
                 PlaySound(0);
 
                 //Cheat codes:
@@ -94,49 +108,49 @@ public class GameManagerScript : MonoBehaviour
 
 
                 yield return new WaitForSeconds(1);
-                redButton.image.color = Color.red;
+                RedButton.image.color = Color.red;
 
 
             }
             //BLUE
-            else if(instructions[c] == 1)
+            else if (instructions[c] == 1)
             {
-                blueButton.image.color = blueButton.colors.pressedColor;
+                BlueButton.image.color = BlueButton.colors.pressedColor;
                 PlaySound(1);
 
                 //Cheat codes:
                 print((c + 1) + ": blue");
 
                 yield return new WaitForSeconds(1);
-                blueButton.image.color = Color.blue;
+                BlueButton.image.color = Color.blue;
 
 
             }
             //YELLOW
-            else if(instructions[c] == 2)
+            else if (instructions[c] == 2)
             {
-                yellowButton.image.color = yellowButton.colors.pressedColor;
+                YellowButton.image.color = YellowButton.colors.pressedColor;
                 PlaySound(2);
 
                 //Cheat codes:
                 print((c + 1) + ": yellow");
 
                 yield return new WaitForSeconds(1);
-                yellowButton.image.color = Color.yellow;
+                YellowButton.image.color = Color.yellow;
 
 
             }
             //GREEN
             else
             {
-                greenButton.image.color = greenButton.colors.pressedColor;
+                GreenButton.image.color = GreenButton.colors.pressedColor;
                 PlaySound(69420);
 
                 //Cheat codes:
                 print((c + 1) + ": green");
 
                 yield return new WaitForSeconds(1);
-                greenButton.image.color = Color.green;
+                GreenButton.image.color = Color.green;
 
 
             }
@@ -153,29 +167,29 @@ public class GameManagerScript : MonoBehaviour
     public void PlaySound(int colour)
     {
         //red
-        if(colour == 0)
+        if (colour == 0)
         {
-            myAS = redButton.gameObject.GetComponent<AudioSource>();
+            myAS = RedButton.gameObject.GetComponent<AudioSource>();
             myAS.PlayOneShot(myAS.clip);
 
         }
         //blue
-        else if(colour == 1)
+        else if (colour == 1)
         {
-            myAS = blueButton.gameObject.GetComponent<AudioSource>();
+            myAS = BlueButton.gameObject.GetComponent<AudioSource>();
             myAS.PlayOneShot(myAS.clip);
 
         }
         //yellow
-        else if(colour == 2)
+        else if (colour == 2)
         {
-            myAS = yellowButton.gameObject.GetComponent<AudioSource>();
+            myAS = YellowButton.gameObject.GetComponent<AudioSource>();
             myAS.PlayOneShot(myAS.clip);
         }
         //green
         else
         {
-            myAS = greenButton.gameObject.GetComponent<AudioSource>();
+            myAS = GreenButton.gameObject.GetComponent<AudioSource>();
             myAS.PlayOneShot(myAS.clip);
         }
     }
@@ -183,9 +197,9 @@ public class GameManagerScript : MonoBehaviour
 
     void EnableButtons(bool directions)
     {
-        redButton.interactable = directions;
-        yellowButton.interactable = directions;
-        blueButton.interactable = directions;
-        greenButton.interactable = directions;
+        RedButton.interactable = directions;
+        YellowButton.interactable = directions;
+        BlueButton.interactable = directions;
+        GreenButton.interactable = directions;
     }
 }
