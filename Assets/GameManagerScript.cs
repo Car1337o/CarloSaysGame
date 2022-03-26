@@ -68,7 +68,7 @@ public class GameManagerScript : MonoBehaviour
     public void ButtonPress(int colour)
     {
 
-        //Player wins
+        //Player already wons
         if (choiceIndex >= instructions.Count)
         {
             print("You already won!");
@@ -85,6 +85,7 @@ public class GameManagerScript : MonoBehaviour
             //next guess
             PlaySound(colour);
             choiceIndex++;
+            //player wins
             if(choiceIndex >= instructions.Count)
             {
                 yourTurnText.SetActive(false);
@@ -116,11 +117,13 @@ public class GameManagerScript : MonoBehaviour
     {
         //Wait to start game
         print("Game Starting in THREE SECONDS");
+        numberText.text = "3";
         yield return new WaitForSeconds(1);
-        print("2");
+        numberText.text = "2";
         yield return new WaitForSeconds(1);
-        print("1");
+        numberText.text = "1";
         yield return new WaitForSeconds(1);
+        numberText.text = "";
 
         //Beeping the buttons to show the user the pattern
         for (int c = 0; c < Difficulty; c++)
