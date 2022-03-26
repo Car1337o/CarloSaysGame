@@ -17,6 +17,15 @@ public class GameManagerScript : MonoBehaviour
     public Button YellowButton;
     public Button GreenButton;
 
+    void populateButtonList()
+    { 
+        List<Button> AllButtons = new List<Button>()
+        {
+            RedButton, BlueButton, YellowButton, GreenButton
+        };
+    }
+    
+
     //audio variables
     AudioSource myAS;
     public AudioClip victory;
@@ -25,6 +34,7 @@ public class GameManagerScript : MonoBehaviour
     {
         EnableButtons(false);
         BuildPuzzle();
+        populateButtonList()
         StartCoroutine(SimonSaysWhat());
     }
 
@@ -83,6 +93,14 @@ public class GameManagerScript : MonoBehaviour
 
     }
 
+    
+    void BeepButton(int button)
+    {
+
+    }
+
+
+
     IEnumerator SimonSaysWhat()
     {
         //Wait to start game
@@ -93,10 +111,10 @@ public class GameManagerScript : MonoBehaviour
         print("1");
         yield return new WaitForSeconds(1);
 
-        //Beeping the buttons
+        //Beeping the buttons to show the user the pattern
+
         for (int c = 0; c < Difficulty; c++)
         {
-
             //RED
             if (instructions[c] == 0)
             {
@@ -109,8 +127,6 @@ public class GameManagerScript : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
                 RedButton.image.color = Color.red;
-
-
             }
             //BLUE
             else if (instructions[c] == 1)
@@ -123,8 +139,6 @@ public class GameManagerScript : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
                 BlueButton.image.color = Color.blue;
-
-
             }
             //YELLOW
             else if (instructions[c] == 2)
@@ -137,8 +151,6 @@ public class GameManagerScript : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
                 YellowButton.image.color = Color.yellow;
-
-
             }
             //GREEN
             else
@@ -151,19 +163,13 @@ public class GameManagerScript : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
                 GreenButton.image.color = Color.green;
-
-
             }
-
-
         }
         yield return new WaitForSeconds(1);
         print("Your turn to play!");
         currentState = GameState.playing;
         EnableButtons(true);
-
     }
-
     public void PlaySound(int colour)
     {
         //red
@@ -193,7 +199,6 @@ public class GameManagerScript : MonoBehaviour
             myAS.PlayOneShot(myAS.clip);
         }
     }
-
 
     void EnableButtons(bool directions)
     {
