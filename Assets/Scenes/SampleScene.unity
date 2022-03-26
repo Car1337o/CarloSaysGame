@@ -392,11 +392,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d9d2ed4634f3c42985d89c5a84feb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Difficulty: 7
+  Difficulty: 2
   RedButton: {fileID: 1399955347}
   BlueButton: {fileID: 1212971753}
   YellowButton: {fileID: 87054596}
   GreenButton: {fileID: 1463968172}
+  victory: {fileID: 8300000, guid: dfb7c002dea7c99438e3f720b6ed613a, type: 3}
 --- !u!82 &146477260
 AudioSource:
   m_ObjectHideFlags: 0

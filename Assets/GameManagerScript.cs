@@ -16,10 +16,11 @@ public class GameManagerScript : MonoBehaviour
     public Button BlueButton;
     public Button YellowButton;
     public Button GreenButton;
+    List<Button> AllButtons;
 
     void populateButtonList()
     { 
-        List<Button> AllButtons = new List<Button>()
+        AllButtons = new List<Button>()
         {
             RedButton, BlueButton, YellowButton, GreenButton
         };
@@ -34,7 +35,7 @@ public class GameManagerScript : MonoBehaviour
     {
         EnableButtons(false);
         BuildPuzzle();
-        populateButtonList()
+        populateButtonList();
         StartCoroutine(SimonSaysWhat());
     }
 
@@ -93,13 +94,14 @@ public class GameManagerScript : MonoBehaviour
 
     }
 
-    
-    void BeepButton(int button)
+    IEnumerator BeepButton(int button)
     {
-
+        //Change button colour
+        AllButtons[button].image.color = AllButtons[button].colors.pressedColor;
+        PlaySound(button);
+        yield return new WaitForSeconds(1);
+        AllButtons[button].image.color = AllButtons[button].colors.disabledColor;
     }
-
-
 
     IEnumerator SimonSaysWhat()
     {
@@ -112,59 +114,11 @@ public class GameManagerScript : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         //Beeping the buttons to show the user the pattern
-
         for (int c = 0; c < Difficulty; c++)
         {
-            //RED
-            if (instructions[c] == 0)
-            {
-                RedButton.image.color = RedButton.colors.pressedColor;
-                PlaySound(0);
-
-                //Cheat codes:
-                print((c + 1) + ": red");
-
-
-                yield return new WaitForSeconds(1);
-                RedButton.image.color = Color.red;
-            }
-            //BLUE
-            else if (instructions[c] == 1)
-            {
-                BlueButton.image.color = BlueButton.colors.pressedColor;
-                PlaySound(1);
-
-                //Cheat codes:
-                print((c + 1) + ": blue");
-
-                yield return new WaitForSeconds(1);
-                BlueButton.image.color = Color.blue;
-            }
-            //YELLOW
-            else if (instructions[c] == 2)
-            {
-                YellowButton.image.color = YellowButton.colors.pressedColor;
-                PlaySound(2);
-
-                //Cheat codes:
-                print((c + 1) + ": yellow");
-
-                yield return new WaitForSeconds(1);
-                YellowButton.image.color = Color.yellow;
-            }
-            //GREEN
-            else
-            {
-                GreenButton.image.color = GreenButton.colors.pressedColor;
-                PlaySound(69420);
-
-                //Cheat codes:
-                print((c + 1) + ": green");
-
-                yield return new WaitForSeconds(1);
-                GreenButton.image.color = Color.green;
-            }
+            yield return StartCoroutine(BeepButton(instructions[c]));
         }
+
         yield return new WaitForSeconds(1);
         print("Your turn to play!");
         currentState = GameState.playing;
